@@ -1,0 +1,105 @@
+﻿<Window x:Class="FlauGal.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:WpfGhost.Controls;assembly=WpfGhost.Controls.HeaderPersister"
+        xmlns:core="clr-namespace:FlauGal.Core"
+        Title="MainWindow" Height="351" Width="736">
+    <Window.Resources>
+        <core:DateOnlyValueConverter x:Key="converter" />
+        <CollectionViewSource x:Key="Images" Source="{Binding SelectedItem.Images}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="FolderName" Converter="{StaticResource converter}" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+    <DockPanel>
+        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+            <MenuItem Header="_File" />
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <Label>Welcome</Label>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Slider Width="100"></Slider>
+            </StatusBarItem>
+            </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView Grid.Column="0" ItemsSource="{Binding DirectoryList.Drives}" SelectedItemChanged="TreeView_OnSelectedItemChanged">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="16">
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRoot}" Value="True">
+                                                <Setter Property="Source" Value="/Resources/drive.png" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsRoot}" Value="False">
+                                                <Setter Property="Source" Value="/Resources/folder.png" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+            <ListBox Grid.Column="2"
+                 ItemsSource="{Binding Source={StaticResource Images}}"
+                 controls:HeaderPersister.IsEnabled="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border Background="#E6E6E6" Padding="10,3">
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name, StringFormat='{}{0:ddd dd. MMM yyyy}'}" />
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListBox.GroupStyle>
+                <controls:HeaderPersister.HeaderTemplate>
+                    <DataTemplate>
+                        <Border Background="#E6E6E6" Padding="10,3">
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name, StringFormat='{}{0:ddd dd. MMM yyyy}'}" />
+                        </Border>
+                    </DataTemplate>
+                </controls:HeaderPersister.HeaderTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="50" Height="50">
+                            <TextBlock Text="{Binding FileName}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </DockPanel>
+</Window>
+
