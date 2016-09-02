@@ -6,6 +6,12 @@ namespace FlauGal.ViewModels
     {
         public DirectoryListViewModel DirectoryList { get; set; }
 
+        public int TileSize
+        {
+            get { return GetValue<int>(); }
+            set { SetValue(value); }
+        }
+
         public FolderViewModel SelectedItem
         {
             get { return GetValue<FolderViewModel>(); }

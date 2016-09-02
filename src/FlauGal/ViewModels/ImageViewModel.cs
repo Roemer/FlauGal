@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FlauGal.Models;
 
 namespace FlauGal.ViewModels
 {
     public class ImageViewModel
     {
-        public string FolderName { get; set; }
-        public string FileName { get; set; }
+        private readonly GalleryImage _model;
+
+        public string FolderName { get { return _model.ContainingFolder; }}
+        public string FileName { get { return _model.Name; } }
+        public string FullPath { get { return _model.FullPath; } }
+
+        public ImageViewModel(GalleryImage model)
+        {
+            _model = model;            
+        }
     }
 }

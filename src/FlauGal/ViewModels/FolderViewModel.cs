@@ -21,7 +21,9 @@ namespace FlauGal.ViewModels
         public bool IsSelected
         {
             get { return _isSelected; }
-            set { _isSelected = value;
+            set
+            {
+                _isSelected = value;
                 InitImages();
             }
         }
@@ -66,9 +68,7 @@ namespace FlauGal.ViewModels
             Images.Clear();
             foreach (var img in _model.GetImages())
             {
-                var imgVm = new ImageViewModel();
-                imgVm.FolderName = img.ContainingFolder;
-                imgVm.FileName = img.Name;
+                var imgVm = new ImageViewModel(img);
                 Images.Add(imgVm);
             }
         }

@@ -62,6 +62,7 @@
     <Compile Include="Core\ObservableObject.cs" />
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="Core\TypedRelayCommand.cs" />
+    <Compile Include="Core\UriToThumbnailConverter.cs" />
     <Compile Include="Models\GalleryDirectory.cs" />
     <Compile Include="Models\GalleryImage.cs" />
     <Compile Include="ViewModels\DirectoryListViewModel.cs" />

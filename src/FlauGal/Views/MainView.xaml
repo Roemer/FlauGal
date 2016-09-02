@@ -5,10 +5,10 @@
         xmlns:core="clr-namespace:FlauGal.Core"
         Title="MainWindow" Height="351" Width="736">
     <Window.Resources>
-        <core:DateOnlyValueConverter x:Key="converter" />
+        <core:UriToThumbnailConverter x:Key="UriToThumbnailConverter" />
         <CollectionViewSource x:Key="Images" Source="{Binding SelectedItem.Images}">
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="FolderName" Converter="{StaticResource converter}" />
+                <PropertyGroupDescription PropertyName="FolderName" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
@@ -19,7 +19,7 @@
         <StatusBar DockPanel.Dock="Bottom">
             <Label>Welcome</Label>
             <StatusBarItem HorizontalAlignment="Right">
-                <Slider Width="100"></Slider>
+                <Slider Width="100" Minimum="50" Maximum="500" Value="{Binding TileSize}"></Slider>
             </StatusBarItem>
             </StatusBar>
         <Grid>
@@ -93,8 +93,9 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="50" Height="50">
-                            <TextBlock Text="{Binding FileName}" />
+                        <!--  TODO: Make this bindid to the root DataContext -->
+                        <Grid Width="{Binding TileSize}" Height="{Binding TileSize}">
+                            <Image Source="{Binding FullPath, Converter={StaticResource UriToThumbnailConverter}}"></Image>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
