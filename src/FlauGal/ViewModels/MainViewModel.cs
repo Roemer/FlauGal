@@ -24,6 +24,7 @@ namespace FlauGal.ViewModels
         public MainViewModel()
         {
             DirectoryList = new DirectoryListViewModel();
+            TileSize = 50;
         }
     }
 }

@@ -1,16 +1,17 @@
-﻿<Window x:Class="FlauGal.Views.MainWindow"
+﻿<Window xmlns:Controls="clr-namespace:FlauGal.Controls"  x:Class="FlauGal.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:WpfGhost.Controls;assembly=WpfGhost.Controls.HeaderPersister"
         xmlns:core="clr-namespace:FlauGal.Core"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" Height="351" Width="736">
     <Window.Resources>
-        <core:UriToThumbnailConverter x:Key="UriToThumbnailConverter" />
         <CollectionViewSource x:Key="Images" Source="{Binding SelectedItem.Images}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="FolderName" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
+        <system:Int32 x:Key="MyValue">1234</system:Int32>
     </Window.Resources>
     <DockPanel>
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
@@ -93,9 +94,16 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <!--  TODO: Make this bindid to the root DataContext -->
-                        <Grid Width="{Binding TileSize}" Height="{Binding TileSize}">
-                            <Image Source="{Binding FullPath, Converter={StaticResource UriToThumbnailConverter}}"></Image>
+                        <Grid Width="{Binding DataContext.TileSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }" Height="{Binding DataContext.TileSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }">
+                            <Controls:AsyncImage ImageSource="{Binding FullPath}" />
+                            <!--<Image>
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource UriToThumbnailConverter}">
+                                        <Binding Path="FullPath" IsAsync="True"></Binding>
+                                        <Binding Path="DataContext.TileSize" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}"></Binding>
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>-->
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

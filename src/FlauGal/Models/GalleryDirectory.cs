@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FlauGal.Models
 {
@@ -36,14 +37,17 @@ namespace FlauGal.Models
             return subDirs;
         }
 
-        public List<GalleryImage> GetImages()
+        public async Task<List<GalleryImage>> GetImages()
         {
             var images = new List<GalleryImage>();
-            foreach (var img in Directory.GetFiles(FullPath, "*.jpg", SearchOption.AllDirectories))
+            await Task.Run(() =>
             {
-                var galImg = new GalleryImage(img);
-                images.Add(galImg);
-            }
+                foreach (var img in Directory.GetFiles(FullPath, "*.jpg", SearchOption.AllDirectories))
+                {
+                    var galImg = new GalleryImage(img);
+                    images.Add(galImg);
+                }
+            });
             return images;
         }
 

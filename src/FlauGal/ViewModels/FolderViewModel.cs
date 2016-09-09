@@ -1,6 +1,7 @@
 ﻿using FlauGal.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace FlauGal.ViewModels
 {
@@ -63,10 +64,11 @@ namespace FlauGal.ViewModels
             catch (Exception ex) { }
         }
 
-        private void InitImages()
+        private async Task InitImages()
         {
             Images.Clear();
-            foreach (var img in _model.GetImages())
+            var images = await _model.GetImages();
+            foreach (var img in images)
             {
                 var imgVm = new ImageViewModel(img);
                 Images.Add(imgVm);
